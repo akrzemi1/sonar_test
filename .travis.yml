@@ -4,7 +4,7 @@ addons:
     token:
       secure: "aRypikqaCxDM0WNHjMZQf51xct2oOa5QASA4W6jzZE5Ov5JiGTpCyOGdrkmZbx9XM1pSqsISwz/j4kxAbvo1ytOimAtZ8VgAhupcGoCg/dqK1zhUdleyUvE5BMDaWO8MR67+kttoEaie/74raJOBBLcuPWAG6pk2+teOdnk05O3uHttRFn/icyB1IgMgrP+OzPJEuvUaoqaw64/wrSDXgPU4najxFKiYq5WQmAxSO4t4dA8c1o8L8hrn1VrrsHFtbVQvPIlDIxUKOflFVA7/GCwSbIzZuiYLgMAJKD8WtgJGWAErCujjoL1VGmoXDbeqJsMTmwLRA03Hk+hobdETGdb/xV/C/FhzWkJJTPd133GXdugLQ6E8U8KdV7/ZFVQmWBBAIPp5wAynNQcWCPU+MFatub4QM0/5tM3DpTxRTCdeQ+t1NFsa9Sv3QInn1tw2ODbQEemBDCPAT32rLG21SRBFPHq41lI5t8I6xx2GEAtkoSVv1U/6WJ+5v+S/9nwZvWczjH7ImQ6kH1hBDIxJLZG0pJjWnuewVJfeQjjydCaLUhTVg+N69RJKqDz9x8MkWeDWpsUrhT95mjTggr/wWLw9KnCePzy52kPVWyEed0SydsukJo+RkHpiLFPt4iQ27qABmpRln8zHC/ahKebO/mf/714HRBD/+zQbt1vKPAM="
 
-script:
+#script:
   # Wraps the compilation with the Build Wrapper to generate configuration (used
   # later by the SonarScanner) into the "bw-output" folder
   #- build-wrapper-linux-x86-64 --out-dir bw-output <your clean build command>
@@ -23,14 +23,14 @@ compiler:
 
 script:
   # Prepare the build system
-  - mkdir build
-  - cd build
-  - cmake ..
-  - cd ..
+  - cmake .
+  - make
   - NUMBER_OF_PROCESSORS=$(nproc --all)
   # Wraps the compilation with the Build Wrapper to generate configuration (used
   # later by the SonarQube Scanner) into the "bw-output" folder
   - build-wrapper-linux-x86-64 --out-dir bw-output cmake --build build/
   # And finally run the SonarQube analysis - read the "sonar-project.properties"
   # file to see the specific configuration
-  - sonar-scanner -Dsonar.cfamily.cache.enabled=true -Dsonar.cfamily.cache.path=${TRAVIS_HOME}/.cfamily -Dsonar.cfamily.threads=${NUMBER_OF_PROCESSORS}
+  - sonar-scanner -Dsonar.cfamily.build-wrapper-output=bw-output
+  # file to see the specific configuration
+  language: cpp
